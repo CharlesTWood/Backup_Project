@@ -2,18 +2,17 @@ from tkinter import *
 import tkinter
 from tkinter import ttk
 from datetime import datetime
-
+import subprocess as sub
 
 def main():
 
     # Utilities
     red = StringVar()
-    red.set('red')
     text = StringVar()
-    user_accounts = ['']
-    user_passwords = ['']
-    admin_accounts = ['admin']
-    admin_passwords = ['password']
+    user_accounts = ['user']
+    user_passwords = ['password']
+    admin_accounts = ['']
+    admin_passwords = ['']
 
     class backupManager:
         permissions = [0, 1]
@@ -25,6 +24,9 @@ def main():
         def welcome(self):
             print('Welcome')
             root.destroy()
+            main_window = tkinter.Tk()
+            background = Frame(main_window, width=900, height=600, bg="gray90")
+            background.pack()
 
     def login():
 
@@ -43,9 +45,9 @@ def main():
                 user.welcome()
 
             else:
-
                 text.set('Login Failed')
-                invalid_login = Label(root, textvariable=text, fg= red.get())
+                red.set('red')
+                invalid_login = Label(root, textvariable=text, fg=red.get())
                 invalid_login.grid(row=3, column=2)
 
         def create_user():
@@ -58,21 +60,20 @@ def main():
                 if checkbox2.instate(['selected']):
                     if len(entrybox3.get()) >= 1 and len(entrybox4.get()) >= 6:
                         user_accounts.append(entrybox3.get())
-                        # Prints latest added user in the admin accounts list
-                        print('added user account', user_accounts[-1])
+                        print('added user account:', user_accounts[-1])
+                        create_account_root.destroy()
 
                 elif checkbox3.instate(['selected']):
                     if len(entrybox3.get()) >= 1 and len(entrybox4.get()) >= 6:
                         admin_accounts.append(entrybox3.get())
-                        # Prints latest added user in the admin accounts list
-                        print('added admin user', admin_accounts[-1])
-                '''
-                elif not checkvar2 and not checkvar3:
+                        print('added admin user:', admin_accounts[-1])
+                        create_account_root.destroy()
+
+                else:
                     print('ERROR: User did not select a checkbox for user type')
-                    text.set('You must specify user Type')
-                    user_type_error_message = Label(create_account_root, textvariable=text, fg=red.get())
-                    user_type_error_message.grid(row=3, column=2)
-                '''
+                    user_type_error_message = Label(create_account_root, text="You must specify user Type", fg="red")
+                    user_type_error_message.grid(row=2, column=4)
+
 
             create_account_root = tkinter.Tk()
 
