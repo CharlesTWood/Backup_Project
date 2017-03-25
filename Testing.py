@@ -1,33 +1,32 @@
 from tkinter import *
-import time
-root = Tk()
-from functools import partial
 
 
-def check_account(username, password):
-    print("sdasdasd")
-    if username == "admin":
-        print('user works')
-        if password == "password":
-            print('Welcome')
-            time.sleep(5)
+class ScrolledCanvas(Frame):
+    def __init__(self, parent=None, color='black'):
+        Frame.__init__(self, parent)
+        self.pack(expand=YES, fill=BOTH)
+        canv = Canvas(self, bg=color, relief=SUNKEN)
+        canv.config(width=300, height=200)
+        canv.config(scrollregion=(0, 0, 300, 1000))
+        canv.config(highlightthickness=0)
+
+        sbar = Scrollbar(self)
+        sbar.config(command=canv.yview)
+        canv.config(yscrollcommand=sbar.set)
+        sbar.pack(side=RIGHT, fill=Y)
+        canv.pack(side=LEFT, expand=YES, fill=BOTH)
+
+        for i in range(20):
+            canv.create_text(200, (i * 100), text='AAA' + str(i), fill='white')
+        self.canvas = canv
 
 
-label1 = Label(root, text="Name")
-label2 = Label(root, text="Password")
-entry1 = Entry(root)
-entry2 = Entry(root)
+ScrolledCanvas().mainloop()
 
-#Holy Crap This is silly
-function_for_check_for_account = partial(check_account, entry1, entry2)
-button1 = Button(root, text="Login", command= function_for_check_for_account)
-button1.grid(row=1, column=2)
 
-label1.grid(row=0, sticky=E)
-label2.grid(row=1, sticky=E)
-entry1.grid(row=0, column=1)
-entry2.grid(row=1, column=1)
 
-checkbox = Checkbutton(root, text="Keep me Logged in")
-checkbox.grid(columnspan=2)
-root.mainloop()
+
+
+
+
+

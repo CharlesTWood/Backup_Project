@@ -1,8 +1,8 @@
 from tkinter import *
 import tkinter
-from tkinter import ttk
+from tkinter import ttk, Canvas, Frame, BOTH
 from datetime import datetime
-import subprocess as sub
+
 
 def main():
 
@@ -25,23 +25,24 @@ def main():
             print('Welcome')
             root.destroy()
             main_window = tkinter.Tk()
-            background = Frame(main_window, width=900, height=600, bg="gray90")
-            background.pack()
+            canvas = Canvas(main_window, width=200, height=100)
+            canvas.pack()
+
 
     def login():
 
         def check_account(logontime):
 
-            if entrybox1.get() in user_accounts and entrybox2.get() in user_passwords:
+            if entrybox_username.get() in user_accounts and entrybox_password.get() in user_passwords:
                     for each_line in user_accounts:
                         print(each_line, 'logged in at:', logontime)
-                    user = backupManager(entrybox1.get(), 0)
+                    user = backupManager(entrybox_username.get(), 0)
                     user.welcome()
 
-            elif entrybox1.get() in admin_accounts and entrybox2.get() in admin_passwords:
+            elif entrybox_username.get() in admin_accounts and entrybox_password.get() in admin_passwords:
                 for each_line in admin_accounts:
                     print(each_line, 'logged in at:', logontime)
-                user = backupManager(entrybox1.get(), 0)
+                user = backupManager(entrybox_username.get(), 0)
                 user.welcome()
 
             else:
@@ -58,14 +59,14 @@ def main():
                 print('checkbox3 - AdminButton', checkbox3.state())
 
                 if checkbox2.instate(['selected']):
-                    if len(entrybox3.get()) >= 1 and len(entrybox4.get()) >= 6:
-                        user_accounts.append(entrybox3.get())
+                    if len(entrybox_Create_account_root.get()) >= 1 and len(entrybox_Create_account_root_password.get()) >= 6:
+                        user_accounts.append(entrybox_Create_account_root.get())
                         print('added user account:', user_accounts[-1])
                         create_account_root.destroy()
 
                 elif checkbox3.instate(['selected']):
-                    if len(entrybox3.get()) >= 1 and len(entrybox4.get()) >= 6:
-                        admin_accounts.append(entrybox3.get())
+                    if len(entrybox_Create_account_root.get()) >= 1 and len(entrybox_Create_account_root_password.get()) >= 6:
+                        admin_accounts.append(entrybox_Create_account_root.get())
                         print('added admin user:', admin_accounts[-1])
                         create_account_root.destroy()
 
@@ -77,56 +78,54 @@ def main():
 
             create_account_root = tkinter.Tk()
 
-            label3 = Label(create_account_root, text="Username")
-            label4 = Label(create_account_root, text="Password")
+            label_Username = Label(create_account_root, text="Username")
+            label_Password = Label(create_account_root, text="Password")
 
-            button3 = Button(create_account_root, text="Create Account ", command=lambda: add_user())
-
-            entry3 = StringVar()
-            entrybox3 = Entry(create_account_root, textvariable=entry3)
-            entry4 = StringVar()
-            entrybox4 = Entry(create_account_root, textvariable=entry4)
-
+            entryvar_Create_account_root = StringVar()
+            entrybox_Create_account_root = Entry(create_account_root, textvariable=entryvar_Create_account_root)
+            entryvar_Create_account_root_password = StringVar()
+            entrybox_Create_account_root_password = Entry(create_account_root, textvariable=entryvar_Create_account_root_password)
             checkbox2 = ttk.Checkbutton(create_account_root, text="User")
             checkbox3 = ttk.Checkbutton(create_account_root, text="Admin")
 
+            button_create_account = Button(create_account_root, text="Create Account ", command=lambda: add_user())
 
             # Grid
             checkbox2.grid(row=3, column=0)
             checkbox3.grid(row=3, column=1)
 
-            label3.grid(row=0, sticky=E)
-            label4.grid(row=1, sticky=E)
+            label_Username.grid(row=0, sticky=E)
+            label_Password.grid(row=1, sticky=E)
 
-            entrybox3.grid(row=0, column=1)
-            entrybox4.grid(row=1, column=1)
+            entrybox_Create_account_root.grid(row=0, column=1)
+            entrybox_Create_account_root_password.grid(row=1, column=1)
 
-            button3.grid(row=1, column=2)
+            button_create_account.grid(row=1, column=2)
 
 
 
         # Main GUI for login screen
-        label1 = Label(root, text="Username")
-        label2 = Label(root, text="Password")
+        label_Username = Label(root, text="Username")
+        label_Password = Label(root, text="Password")
 
-        entry1 = StringVar()
-        entrybox1 = Entry(root, textvariable=entry1)
-        entry2 = StringVar()
-        entrybox2 = Entry(root, textvariable=entry2)
+        entryvar_username = StringVar()
+        entrybox_username = Entry(root, textvariable=entryvar_username)
+        entryvar_password = StringVar()
+        entrybox_password = Entry(root, textvariable=entryvar_password)
 
         time = datetime.now()
 
-        label1.grid(row=0, sticky=E)
-        label2.grid(row=1, sticky=E)
+        label_Username.grid(row=0, sticky=E)
+        label_Password.grid(row=1, sticky=E)
 
-        entrybox1.grid(row=0, column=1)
-        entrybox2.grid(row=1, column=1)
+        entrybox_username.grid(row=0, column=1)
+        entrybox_password.grid(row=1, column=1)
 
-        checkbox = Checkbutton(root, text="Keep me Logged in")
-        checkbox.grid(columnspan=2)
+        checkbox_keepmelogged = Checkbutton(root, text="Keep me Logged in")
+        checkbox_keepmelogged.grid(columnspan=2)
 
-        button1 = Button(root, text="Login", command=lambda: check_account(time))
-        button1.grid(row=1, column=2)
+        button_Login = Button(root, text="Login", command=lambda: check_account(time))
+        button_Login.grid(row=1, column=2)
 
         button2 = Button(root, text="Create Account", command=create_user)
         button2.grid(row=0, column=2)
